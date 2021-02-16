@@ -71,7 +71,7 @@ describe('UF Directory Server Unit Tests', function() {
     it('responds with a 404 error to other GET requests', function(done) {
        request.get('http://localhost:8080/pizza', function(error, response, body) {
       
-        response.statusCode.should.equal(404);
+        response.statusCode.should.equal(414);
 
         body.should.equal('404, Page Not Found')
 
