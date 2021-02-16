@@ -4,13 +4,6 @@ var should = require('should'),
 
 /* Globals */
 var listings;
-fs.readFile('listings.json', 'utf8' , (err, data) => {
-  if (err) {
-    console.error(err)
-    return
-  }
-  listings = data;
-})
 /*
   Describe blocks organize your unit tests into distinct categories of functionality.
   
