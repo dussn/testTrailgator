@@ -8,12 +8,16 @@ loginButton.addEventListener("click", (e) => {
     const username = loginForm.email.value;
     const password = loginForm.password.value;
 
-    if (username === "user" && password === "web_dev") {
-        alert("You have successfully logged in.");
-        location.reload();
-    } else {
-        loginErrorMsg.style.opacity = 1;
+    var account = {
+        "email" : loginForm.email.value,
+        "password" : loginForm.password.value
     }
+    console.log(account);
+    //encrypt with server public key
+    //send request to server to confirm this is an account and if so that the password matches
+
+    
+
 })
 signupButton.addEventListener("click", (e) => {
     e.preventDefault();

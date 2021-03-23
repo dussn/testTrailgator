@@ -6,19 +6,27 @@ const loginButton = document.getElementById("loginlink");
 
 signupButton.addEventListener("click", (e) => {
     e.preventDefault();
-    const email = signupForm.email.value;
-    const password = signupForm.password.value;
     
     //need to confirm that something is a legit email address
 
     //can do this with sendgrid
+    //make a json of the fields and send it to the server
 
+    var account = {
+        "email" : signupForm.email.value,
+        "password" : signupForm.password.value
+    }
+    console.log(account);
+
+    //send request to server to confirm that this is a unique email
+    //if yes send code to email to authenticate account
+    //if code matches encrypt and send to the server
     
 })
 
 loginButton.addEventListener("click", (e) => {
     e.preventDefault();
     open("login-page.html","_self");
-    //opens a new page
+    //opens the login page
     
 })
