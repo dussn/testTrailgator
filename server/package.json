@@ -1,12 +1,12 @@
 {
-  "name": "signupbackend",
+  "name": "server",
   "version": "1.0.0",
-  "description": "Controls signing up ",
+  "description": "",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Dustin H",
+  "author": "Dustin Heuser",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
