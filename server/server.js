@@ -25,11 +25,23 @@ app.use(
 
 //new account request
 app.post('/signup', function(req, res){
-  console.log('POST');
-  mongo.addAccount(req.body);
-  console.log(req.body);
-  //todo add verification api here
-})
+  mongo.connect(req.body,'signup')
+.then(function (data) {
+    res.send(data);
+    res.end();
+  });
+});
+
+//login request
+app.post('/login', function(req, res){
+
+  mongo.connect(req.body,'login')
+.then(function (data) {
+    res.send(data);
+    res.end();
+  });
+});
+
 
 const PORT = process.env.PORT || 3001;
 

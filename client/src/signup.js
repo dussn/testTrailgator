@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+
 const validator = require('email-validator');
 class SignupForm extends React.Component {
     constructor(props) {
@@ -35,7 +36,9 @@ class SignupForm extends React.Component {
       if(validator.validate(account["email"])){
         axios
         .post('http://localhost:3001/signup', account)
-        .then(() => console.log('account sent'))
+        .then(function (response) {
+          console.log(response.data);
+        })
         .catch(err => {
           console.error(err);
         });
@@ -45,23 +48,30 @@ class SignupForm extends React.Component {
   
     render() {
       return (
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Name: 
-            <input type="text" value={this.state.nameValue} name="nameField" onChange={this.handleChange} />
-          </label>
-          <br></br>
-          <label>
-            Email: 
-            <input type="text" value={this.state.emailValue} name="emailField" onChange={this.handleChange} />
-          </label>
-          <br></br>
-          <label>
-            Password: 
-            <input type="password" value={this.state.passwordValue} name="passField" onChange={this.handleChange} />
-          </label>
-          <input type="submit" value="Submit" name = "submit button" />
-        </form>
+        <div class = 'signup-container'>
+          <nav>
+              <a class="nav-link" href="/"> Home</a> 
+          </nav>
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              Name: 
+              <input type="text" value={this.state.nameValue} name="nameField" onChange={this.handleChange} />
+            </label>
+            <br></br>
+            <label>
+              Email: 
+              <input type="text" value={this.state.emailValue} name="emailField" onChange={this.handleChange} />
+            </label>
+            <br></br>
+            <label>
+              Password: 
+              <input type="password" value={this.state.passwordValue} name="passField" onChange={this.handleChange} />
+            </label>
+            <input type="submit" value="Submit" name = "submit button" />
+          </form>
+          Already have an account? <a class="nav-link" href="/login"> Login</a>
+        </div>
+        
       );
     }
   }
