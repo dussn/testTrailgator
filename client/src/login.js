@@ -62,7 +62,10 @@ class LoginForm extends React.Component {
                     <input class = 'submit' type="submit" value = 'Log in'  name = "submit button" />
                     <br></br>
                     <br></br>
-                    Dont Have an Account? <a class="nav-link" href="/signup"> Signup</a>
+                    <div class="form-check form-check-inline nowrap">
+                    Dont Have an Account? <a class="nav-link" href="/signup">Signup</a>
+                    </div>
+                    
                 </form>
                 
             </div>
