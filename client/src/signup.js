@@ -52,23 +52,21 @@ class SignupForm extends React.Component {
           <nav>
               <a class="nav-link" href="/"> Home</a> 
           </nav>
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              Name: 
-              <input type="text" value={this.state.nameValue} name="nameField" onChange={this.handleChange} />
-            </label>
-            <br></br>
-            <label>
-              Email: 
-              <input type="text" value={this.state.emailValue} name="emailField" onChange={this.handleChange} />
-            </label>
-            <br></br>
-            <label>
-              Password: 
-              <input type="password" value={this.state.passwordValue} name="passField" onChange={this.handleChange} />
-            </label>
-            <input type="submit" value="Submit" name = "submit button" />
+          <div class = 'container'>
+            <form onSubmit={this.handleSubmit}>
+              <div class = 'input-group mb-3'>
+                <input type="text" class ='form-control' placeholder = 'Name' value={this.state.nameValue} name="nameField" onChange={this.handleChange}  />
+              </div>
+              <div class = 'input-group mb-3'>
+                <input type="text" class ='form-control' placeholder = 'Email' value={this.state.emailValue} name="emailField" onChange={this.handleChange}  />
+              </div>
+              <div class = 'input-group mb-3'>
+                <input type="password" class ='form-control' placeholder = 'Password' value={this.state.passwordValue} name="passField" onChange={this.handleChange} />
+              </div>
+              <input class = 'submit' type="submit" value = 'Sign up'  name = "submit button" />
           </form>
+          </div>
+          
           Already have an account? <a class="nav-link" href="/login"> Login</a>
         </div>
         

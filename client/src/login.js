@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import "./login.css";
 const validator = require('email-validator');
 
 class LoginForm extends React.Component {
@@ -33,7 +34,7 @@ class LoginForm extends React.Component {
             axios
             .post('http://localhost:3001/login', account)
             .then(function (response) {
-                console.log(response.data);
+                alert(response.data);
               })
             .catch(err => {
               console.error(err);
@@ -49,19 +50,22 @@ class LoginForm extends React.Component {
             <nav>
                 <a class="nav-link" href="/"> Home</a> 
             </nav>
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Email:
-                    <input type="text" value={this.state.emailValue} name="emailField" onChange={this.handleChange} />
-                </label>
-                <br></br>
-                <label>
-                    Password:
-                    <input type="password" value={this.state.passwordValue} name="passField" onChange={this.handleChange} />
-                </label>
-                <input type="submit" value="Submit" name = "submit button" />
-            </form>
-            Dont Have an Account? <a class="nav-link" href="/signup"> Signup</a>
+            <div class = 'container'>
+                <form class = 'loginForm' onSubmit={this.handleSubmit}>
+                    <div class = 'input-group mb-3'>
+                        <input type="text" class ='form-control' placeholder = 'Email' value={this.state.emailValue} name="emailField" onChange={this.handleChange}  />
+                    </div>
+                    <div class = 'input-group mb-3'>
+                        <input type="password" class ='form-control' placeholder = 'Password' value={this.state.passwordValue} name="passField" onChange={this.handleChange} />
+                    </div>
+
+                    <input class = 'submit' type="submit" value = 'Log in'  name = "submit button" />
+                    <br></br>
+                    <br></br>
+                    Dont Have an Account? <a class="nav-link" href="/signup"> Signup</a>
+                </form>
+                
+            </div>
         </div>
         
       );
