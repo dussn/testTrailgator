@@ -10,5 +10,5 @@ function Header() {
     </div>
   );
 }
-//<a class="nav-link" href="/signup"> Signup</a>
+
 export default Header;

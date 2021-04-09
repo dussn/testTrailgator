@@ -34,7 +34,10 @@ class LoginForm extends React.Component {
             axios
             .post('http://localhost:3001/login', account)
             .then(function (response) {
-                alert(response.data);
+                
+                const token = response.data
+                sessionStorage.setItem('token', JSON.stringify(token));
+                //direct user back to home or profile
               })
             .catch(err => {
               console.error(err);
@@ -74,4 +77,5 @@ class LoginForm extends React.Component {
       );
     }
   }
+  
   export default LoginForm;

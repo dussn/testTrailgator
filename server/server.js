@@ -37,6 +37,13 @@ app.post('/login', function(req, res){
 
   mongo.connect(req.body,'login')
 .then(function (data) {
+    if(data)
+    {
+      res.send({
+          token: 'test123'
+        });
+    }
+    
     res.send(data);
     res.end();
   });
