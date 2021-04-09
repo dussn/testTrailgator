@@ -43,11 +43,11 @@ module.exports = {
                                 console.log(newUser);
                                 
                                 collection.insertOne(newUser, function (err, docs) {
-                                    resolve("Accounted created!");
+                                    resolve(true);
                                     client.close();
                                 });
                             }
-                            else resolve("An account already exists for this email!")
+                            else resolve(false)
                             
                         } 
                         else if(action == 'login'){
@@ -59,7 +59,7 @@ module.exports = {
     
                                 resolve(newUser.validPassword(account['password']));
                             }
-                            else resolve("This email does not have an account!");
+                            else resolve(false);
                         }
                         else client.close()
                     });

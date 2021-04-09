@@ -3,15 +3,8 @@ import "./App.css";
 import React from "react";
 
 
-function getToken() {
-  const tokenString = sessionStorage.getItem('token');
-  const userToken = JSON.parse(tokenString);
-  return userToken?.token
-}
-
 function Home() {
-  const token = getToken();
-  if (token)
+  if (document.cookie)
   {
     return (
       <div class="home-container">

@@ -1,30 +1,32 @@
 import "./App.css";
 import React from "react";
-import { Route, BrowserRouter } from "react-router-dom";
+import {Router, Route, BrowserRouter } from "react-router-dom";
 import Header from "./Header";
 import Home from "./Home";
-import Login from "./login";
-import Signup from "./signup";
+import Login from "./Login/login";
+import Signup from "./Login/signup";
+import Signout from './Login/signout';
+import Profile from './User/profile';
+import Calendar from './User/calendar';
+import history from './history';
+import {Authenticate} from './auth';
 
-function getToken() {
-  const tokenString = sessionStorage.getItem('token');
-  const userToken = JSON.parse(tokenString);
-  return userToken?.token
-}
+
 
 function App() {
-  const token = getToken();
+  //const token = getToken();
 
-  if(token) {
+  if(Authenticate()) {
+    //alert(document.cookie);
     return (
       <div className="App">
       <Header />
-      <BrowserRouter>
+      <Router history={history}>
       <Route exact path="/" component={Home} />
-      <Route exact path="/profile" component={Login} />
-      <Route exact path="/calendar" component={Login} />
-      <Route exact path="/signout" component={Login} />
-      </BrowserRouter>
+      <Route exact path="/profile" component={Profile} />
+      <Route exact path="/calendar" component={Calendar} />
+      <Route exact path="/signout" component={Signout} />
+      </Router>
       </div>
     );
   }
@@ -32,11 +34,11 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <BrowserRouter>
+      <Router history={history}>
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }

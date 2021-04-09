@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import "./login.css";
+import history from './../history';
 const validator = require('email-validator');
 
 class LoginForm extends React.Component {
@@ -29,15 +30,18 @@ class LoginForm extends React.Component {
             email: this.state.emailValue,
             password: this.state.passwordValue
         };
-        var status = false;
         if(validator.validate(account["email"])){
             axios
             .post('http://localhost:3001/login', account)
             .then(function (response) {
+                if(!response.data){
+                  alert("Email or password is incoorect!")
+                } else {
+                  const token = response.data
+                  document.cookie = `token=${token}`
+                  history.push('/')
+                }
                 
-                const token = response.data
-                sessionStorage.setItem('token', JSON.stringify(token));
-                //direct user back to home or profile
               })
             .catch(err => {
               console.error(err);
