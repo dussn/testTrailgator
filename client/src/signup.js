@@ -63,11 +63,11 @@ class SignupForm extends React.Component {
               <div class = 'input-group mb-3'>
                 <input type="password" class ='form-control' placeholder = 'Password' value={this.state.passwordValue} name="passField" onChange={this.handleChange} />
               </div>
-              <input class = 'submit' type="submit" value = 'Sign up'  name = "submit button" />
+              <input class = 'submit' type="submit" value = 'Sign Up'  name = "submit button" />
           </form>
           </div>
           <div class="form-check form-check-inline nowrap">
-              Already have an account? <a class="nav-link" href="/login"> Login</a>
+              Already have an account? <a class="nav-link" href="/login"> Log In</a>
           </div>
           
         </div>

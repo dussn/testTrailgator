@@ -59,11 +59,11 @@ class LoginForm extends React.Component {
                         <input type="password" class ='form-control' placeholder = 'Password' value={this.state.passwordValue} name="passField" onChange={this.handleChange} />
                     </div>
 
-                    <input class = 'submit' type="submit" value = 'Log in'  name = "submit button" />
+                    <input class = 'submit' type="submit" value = 'Log In'  name = "submit button" />
                     <br></br>
                     <br></br>
                     <div class="form-check form-check-inline nowrap">
-                    Dont Have an Account? <a class="nav-link" href="/signup">Signup</a>
+                    Dont Have an Account? <a class="nav-link" href="/signup">Sign Up</a>
                     </div>
                     
                 </form>
