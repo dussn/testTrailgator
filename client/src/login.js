@@ -5,7 +5,7 @@ const validator = require('email-validator');
 class LoginForm extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {emailValue : '',passValue: ''};
+      this.state = {eValue : '',passValue: ''};
   
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,9 +23,8 @@ class LoginForm extends React.Component {
     }
     handleSubmit(event) {
         //submit button
-        //alert("name: " +this.state.nameValue + " email: " + this.state.emailValue + " PASSWORD: " + this.state.passwordValue);
         var account = {
-            name: this.state.nameValue,
+            name: "",
             email: this.state.emailValue,
             password: this.state.passwordValue
         };
