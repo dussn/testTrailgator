@@ -1,16 +1,11 @@
+//setup
 const express = require('express');
-Promise = require('promise');
-//const router = express.Router();
-
-
 const MongoClient = require('mongodb').MongoClient;
-
-
 const User = require('./hash'); 
 const uri = require('../../config/db').uri;
-
 const dbname = require('../../config/db').database;
 const collname = require('../../config/db').collection;
+Promise = require('promise');
 
 module.exports = {
     connect: function (account, action) {
@@ -34,6 +29,7 @@ module.exports = {
                         
                         //if the search returns nothing we can add the data to the database
                         if (action == 'signup') {
+                            //checks if a user with that email already exists
                             if(!result.length){
                                 let newUser = new User(); 
                                 newUser.name = account["name"], 
@@ -43,20 +39,28 @@ module.exports = {
                                 console.log(newUser);
                                 
                                 collection.insertOne(newUser, function (err, docs) {
-                                    resolve(true);
+                                    if(err) { 
+                                        console.log(err);
+                                        resolve(false);
+                                    }
+                                    //successfully added user to db
+                                    else resolve(true);
                                     client.close();
                                 });
-                            }
+                            } //if email exists promise is resolved as false
                             else resolve(false)
                             
                         } 
+                        //login handling
                         else if(action == 'login'){
+                            //if db query is not 0
                             if(result.length){
                                 client.close();
                                 let newUser = new User(); 
+                                //hash password
                                 newUser.salt = result[0]["salt"];
                                 newUser.hash = result[0]["hash"];
-    
+                                //store new user into db and resolve promise
                                 resolve(newUser.validPassword(account['password']));
                             }
                             else resolve(false);

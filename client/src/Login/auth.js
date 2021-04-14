@@ -4,9 +4,12 @@ import Cookies  from 'universal-cookie';
 const auth = (jwt) => {
     const cookies = new Cookies();
     if(jwt){
+        //formats token to post to server
         var token = {
             code: jwt
         }
+
+        //send post request to backend under /auth
         axios
         .post("http://localhost:3001/auth",token)
         .then(function (response) {

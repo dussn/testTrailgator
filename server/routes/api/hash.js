@@ -1,6 +1,8 @@
 const mongoose = require('mongoose'); 
 var crypto = require('crypto'); 
 
+//code used from https://www.geeksforgeeks.org/node-js-password-hashing-crypto-module/
+
 const UserSchema = mongoose.Schema({ 
     name : { 
         type : String, 

@@ -1,28 +1,22 @@
+//imports
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-
 const accountManagement = require('./routes/api/accountManagement');
-
 const app = express();
 
 //middleware setup
 app.use(express.json());
 app.set('port', process.env.PORT || 3001);
 
-
+//function imports
 const mongo = require('./routes/api/accountManagement');
 const auth = require('./routes/api/auth');
 
 
 
 //cors config
-app.use(
-    cors({
-      /*origin: 'http://localhost:3001',
-      credentials: true,*/
-    })
-);
+app.use(cors());
 
 //new account request
 app.post('/signup', async (req, res) => {
@@ -30,26 +24,27 @@ app.post('/signup', async (req, res) => {
   res.end();
 });
 
-//login request
+//login requests
 app.post('/login', async (req, res) => {
   if(await mongo.connect(req.body,'login')){
+    //if password is valid generate access token to pass back to front
     const token = auth.generateAccessToken({username: req.body.email});
     console.log(token)
     res.json(token);
   } else res.send(false);
-  
+  res.end();
 });
 
 //auth request
-app.post('/auth', async (req, res) => {;
+app.post('/auth', async (req, res) => {
+  //use this to prevent server from crashing due to invalid jwt tokens
   try {
       res.send(await auth.authenticateToken(req));
     }
     catch (error) {
       console.log(error);
     }
-  
-  
+    res.end();
 });
 
 const PORT = process.env.PORT || 3001;

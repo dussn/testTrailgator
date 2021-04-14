@@ -6,14 +6,16 @@ import {
 } from "react-router-dom";
 
 function Signout() {
+  //this will remove the jwt access token and set isauth to false on load
   useEffect(() => {
     const cookies = new Cookies();
     cookies.remove("token");
     cookies.set("isAuth",false);
+    //in the case user is logged in as admin
     cookies.remove("isAdmin");
-    history.push('/');
     }, []);
 
+    //redirects the page to home
     return( 
     <div>
     <Redirect from="/signout" to="/" />

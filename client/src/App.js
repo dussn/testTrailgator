@@ -13,14 +13,11 @@ import Signout from './Login/signout';
 import Profile from './User/profile';
 import Calendar from './User/calendar';
 import history from './history';
-//import {Authenticate} from './auth';
 import Auth from './Login/authCheck';
 import auth from './Login/auth';
 import Cookies  from 'universal-cookie';
 
 
-
-//        <Route path="/profile" render={props => <Auth><Profile {...props} /></Auth>} />
 
 
 class App extends Component{
@@ -47,5 +44,5 @@ class App extends Component{
     );
   }
 }
-//
+
 export default App;
