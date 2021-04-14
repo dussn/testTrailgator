@@ -26,7 +26,7 @@ app.use(
 
 //new account request
 app.post('/signup', async (req, res) => {
-  res.send(await  mongo.connect(req.body,'signup'));
+  res.send(await mongo.connect(req.body,'signup'));
   res.end();
 });
 
@@ -34,11 +34,21 @@ app.post('/signup', async (req, res) => {
 app.post('/login', async (req, res) => {
   if(await mongo.connect(req.body,'login')){
     const token = auth.generateAccessToken({username: req.body.email});
+    console.log(token)
     res.json(token);
   } else res.send(false);
   
 });
-
+app.post('/auth', async (req, res) => {;
+  try {
+      res.send(await auth.authenticateToken(req));
+    }
+    catch (error) {
+      console.log(error);
+    }
+  
+  
+});
 
 const PORT = process.env.PORT || 3001;
 

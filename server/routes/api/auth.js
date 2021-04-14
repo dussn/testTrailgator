@@ -12,10 +12,31 @@ module.exports = {
         return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
       },
 
-    authenticateToken: function(req, res, next) {
-        const authHeader = req.headers['authorization']
-        const token = authHeader && authHeader.split(' ')[1]
-        if (token == null) return res.sendStatus(401)
-        return jwt.verify(token, process.env.TOKEN_SECRET);
-      }
+    authenticateToken: function (req) {
+        return new Promise(function(resolve,reject) {
+            const token = req.body['code'];
+            const header = token.split('.')[0]
+            //console.log(header)
+            if (header == 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9')
+            {
+                //console.log(jwt.verify(token,process.env.TOKEN_SECRET));
+                jwt.verify(token,process.env.TOKEN_SECRET,  (err, result) => {
+                    if (err) {
+                        throw err;
+                    }
+                    if(result)
+                    {
+                        //send_back = result['username'];
+                        resolve(result['username']);
+                    }
+                    else resolve(false);
+                    
+                });
+            }
+            else { 
+                send_back = false;
+                resolve(false)
+            }
+        });
+    }   
 }

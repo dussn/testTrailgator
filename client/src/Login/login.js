@@ -2,6 +2,15 @@ import React from 'react';
 import axios from 'axios';
 import "./login.css";
 import history from './../history';
+import Cookies  from 'universal-cookie';
+import auth from './auth';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
 const validator = require('email-validator');
 
 class LoginForm extends React.Component {
@@ -35,11 +44,15 @@ class LoginForm extends React.Component {
             .post('http://localhost:3001/login', account)
             .then(function (response) {
                 if(!response.data){
-                  alert("Email or password is incoorect!")
+                  alert("Email or password is incorrect!")
                 } else {
                   const token = response.data
-                  document.cookie = `token=${token}`
+                  const cookies = new Cookies();
+                  cookies.set('token',token);
+                  
+                  auth(token);
                   history.push('/')
+                  window.location.reload();
                 }
                 
               })
@@ -47,30 +60,30 @@ class LoginForm extends React.Component {
               console.error(err);
          });
         
-      } 
+      } else alert("Please enter a valid email!");
       event.preventDefault();
     }
   
     render() {
       return (
-        <div class = 'login-page-container'>
+        <div className = 'login-page-container'>
             <nav>
-                <a class="nav-link" href="/"> Home</a> 
+                <a className="nav-link" href="/"> Home</a> 
             </nav>
-            <div class = 'container'>
-                <form class = 'loginForm' onSubmit={this.handleSubmit}>
-                    <div class = 'input-group mb-3'>
-                        <input type="text" class ='form-control' placeholder = 'Email' value={this.state.emailValue} name="emailField" onChange={this.handleChange}  />
+            <div className = 'container'>
+                <form className = 'loginForm' onSubmit={this.handleSubmit}>
+                    <div className = 'input-group mb-3'>
+                        <input type="text" className ='form-control' placeholder = 'Email' value={this.state.emailValue} name="emailField" onChange={this.handleChange}  />
                     </div>
                     <div class = 'input-group mb-3'>
-                        <input type="password" class ='form-control' placeholder = 'Password' value={this.state.passwordValue} name="passField" onChange={this.handleChange} />
+                        <input type="password" className ='form-control' placeholder = 'Password' value={this.state.passwordValue} name="passField" onChange={this.handleChange} />
                     </div>
 
-                    <input class = 'submit' type="submit" value = 'Log In'  name = "submit button" />
+                    <input className = 'submit' type="submit" value = 'Log In'  name = "submit button" />
                     <br></br>
                     <br></br>
                     <div class="form-check form-check-inline nowrap">
-                    Dont Have an Account? <a class="nav-link" href="/signup">Sign Up</a>
+                    Dont Have an Account? <a className="nav-link" href="/signup">Sign Up</a>
                     </div>
                     
                 </form>

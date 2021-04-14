@@ -56,29 +56,29 @@ class SignupForm extends React.Component {
   
     render() {
       return (
-        <div class = 'signup-container'>
+        <div className = 'signup-container'>
           <nav>
-              <a class="nav-link" href="/"> Home</a> 
+              <a className="nav-link" href="/"> Home</a> 
           </nav>
-          <div class = 'container'>
+          <div className = 'container'>
             <form onSubmit={this.handleSubmit}>
-              <div class = 'input-group mb-3'>
-                <input type="text" class ='form-control' placeholder = 'Name' value={this.state.nameValue} name="nameField" onChange={this.handleChange}  />
+              <div className = 'input-group mb-3'>
+                <input type="text" className ='form-control' placeholder = 'Name' value={this.state.nameValue} name="nameField" onChange={this.handleChange}  />
               </div>
-              <div class = 'input-group mb-3'>
-                <input type="text" class ='form-control' placeholder = 'Email' value={this.state.emailValue} name="emailField" onChange={this.handleChange}  />
+              <div className = 'input-group mb-3'>
+                <input type="text" className ='form-control' placeholder = 'Email' value={this.state.emailValue} name="emailField" onChange={this.handleChange}  />
               </div>
-              <div class = 'input-group mb-3'>
-                <input type="password" class ='form-control' placeholder = 'Password' value={this.state.passwordValue} name="passField" onChange={this.handleChange} />
+              <div className = 'input-group mb-3'>
+                <input type="password" className ='form-control' placeholder = 'Password' value={this.state.passwordValue} name="passField" onChange={this.handleChange} />
               </div>
-              <div class = 'input-group mb-3'>
-                <input type="password" class ='form-control' placeholder = 'Confirm Password' value={this.state.cpasswordValue} name="confirmPassField" onChange={this.handleChange} />
+              <div className = 'input-group mb-3'>
+                <input type="password" className ='form-control' placeholder = 'Confirm Password' value={this.state.cpasswordValue} name="confirmPassField" onChange={this.handleChange} />
               </div>
-              <input class = 'submit' type="submit" value = 'Sign Up'  name = "submit button" />
+              <input className = 'submit' type="submit" value = 'Sign Up'  name = "submit button" />
           </form>
           </div>
-          <div class="form-check form-check-inline nowrap">
-              Already have an account? <a class="nav-link" href="/login"> Log In</a>
+          <div className="form-check form-check-inline nowrap">
+              Already have an account? <a className="nav-link" href="/login"> Log In</a>
           </div>
           
         </div>

@@ -1,7 +1,17 @@
 import React from 'react';
 import axios from 'axios';
-export function Authenticate() {
+export async function Authenticate() {
     //alert("hey!");
-    return (document.cookie);
+    
+    if(document.cookie){
+    
+        axios
+            .post('http://localhost:3001/login/auth',document.cookie)
+            .then(function (response) {
+                console.log(response.data);
+                return response.data;
+            })
+    }
+    return false;
 }
 
