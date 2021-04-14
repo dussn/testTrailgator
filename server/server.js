@@ -12,6 +12,7 @@ app.set('port', process.env.PORT || 3001);
 
 
 const mongo = require('./routes/api/accountManagement');
+const auth = require('./routes/api/auth');
 
 
 
@@ -24,24 +25,32 @@ app.use(
 );
 
 //new account request
-app.post('/signup', function(req, res){
-  mongo.connect(req.body,'signup')
-.then(function (data) {
-    res.send(data);
-    res.end();
-  });
+app.post('/signup', async (req, res) => {
+  res.send(await mongo.connect(req.body,'signup'));
+  res.end();
 });
 
 //login request
-app.post('/login', function(req, res){
-
-  mongo.connect(req.body,'login')
-.then(function (data) {
-    res.send(data);
-    res.end();
-  });
+app.post('/login', async (req, res) => {
+  if(await mongo.connect(req.body,'login')){
+    const token = auth.generateAccessToken({username: req.body.email});
+    console.log(token)
+    res.json(token);
+  } else res.send(false);
+  
 });
 
+//auth request
+app.post('/auth', async (req, res) => {;
+  try {
+      res.send(await auth.authenticateToken(req));
+    }
+    catch (error) {
+      console.log(error);
+    }
+  
+  
+});
 
 const PORT = process.env.PORT || 3001;
 
