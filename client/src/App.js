@@ -2,9 +2,7 @@ import "./App.css";
 import React, { Component, useEffect  } from 'react';
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
-  Link,
   Redirect
 } from "react-router-dom";
 import Header from "./Header";
@@ -44,7 +42,6 @@ class App extends Component{
           <Route path="/calendar" render={props => <Auth><Calendar {...props} /></Auth>} />
           <Route path="/signout" render={props => <Auth><Signout {...props} /></Auth>} />
           <Route path="/profile" render={props => <Auth><Profile {...props} /></Auth>} />
-          
         </Router>
       </div>
     );

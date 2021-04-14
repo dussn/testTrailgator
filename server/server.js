@@ -39,6 +39,8 @@ app.post('/login', async (req, res) => {
   } else res.send(false);
   
 });
+
+//auth request
 app.post('/auth', async (req, res) => {;
   try {
       res.send(await auth.authenticateToken(req));
