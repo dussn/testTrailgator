@@ -75,14 +75,14 @@ class LoginForm extends React.Component {
                     <div className = 'input-group mb-3'>
                         <input type="text" className ='form-control' placeholder = 'Email' value={this.state.emailValue} name="emailField" onChange={this.handleChange}  />
                     </div>
-                    <div class = 'input-group mb-3'>
+                    <div className = 'input-group mb-3'>
                         <input type="password" className ='form-control' placeholder = 'Password' value={this.state.passwordValue} name="passField" onChange={this.handleChange} />
                     </div>
 
                     <input className = 'submit' type="submit" value = 'Log In'  name = "submit button" />
                     <br></br>
                     <br></br>
-                    <div class="form-check form-check-inline nowrap">
+                    <div className="form-check form-check-inline nowrap">
                     Dont Have an Account? <a className="nav-link" href="/signup">Sign Up</a>
                     </div>
                     

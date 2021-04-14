@@ -10,10 +10,11 @@ const auth = (jwt) => {
         }
 
         //send post request to backend under /auth
-        axios
+        axios //post to localhost/auth
         .post("http://localhost:3001/auth",token)
         .then(function (response) {
                 if(response.data != false)
+                    //checks the return is not false 
                     cookies.set('isAuth',true);
                 else {
                     cookies.set('isAuth',false);
