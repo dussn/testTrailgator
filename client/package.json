@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.1.5",
+    "@ericz1803/react-google-calendar": "^4.0.3",
     "@fullcalendar/core": "^5.6.0",
     "@fullcalendar/daygrid": "^5.6.0",
     "@fullcalendar/google-calendar": "^5.6.0",
