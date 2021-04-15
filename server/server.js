@@ -30,7 +30,7 @@ app.post('/login', async (req, res) => {
   var ret = await mongo.connect(req.body,'login');
   if(ret){
     //if password is valid generate access token to pass back to front
-    console.log(userRole);
+    console.log(ret.role);
     const token = auth.generateAccessToken({username: req.body.email, role: ret.role});
     //console.log(token)
     res.json(token);
@@ -51,14 +51,29 @@ app.post('/auth', async (req, res) => {
 });
 
 app.post('/data', async (req, res) => {
-  //use this to prevent server from crashing due to invalid jwt tokens
   try {
-      //console.log(await mongo.getData()); 
       res.send(await mongo.getData());
     }
     catch (error) {
       console.log(error);
     }
+    res.end();
+});
+
+
+app.post('/settings/addmember', async (req, res) => {
+  console.log("attempting to add...")
+  try{
+    
+    //autheticate that admin is making the request
+    if((await auth.authenticateToken(req)).role == "admin") {
+      
+      res.send(await mongo.addMember(req));
+    }
+  }
+  catch (error) {
+    console.log(error);
+  }
     res.end();
 });
 

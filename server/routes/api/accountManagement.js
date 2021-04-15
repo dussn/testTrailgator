@@ -6,6 +6,7 @@ const uri = require('../../config/db').uri;
 const dbname = require('../../config/db').database;
 const accountCollection = require('../../config/db').accountCollection;
 const dataCollection = require('../../config/db').dataCollection;
+const ObjectId = require('mongodb').ObjectId; 
 Promise = require('promise');
 
 module.exports = {
@@ -80,8 +81,7 @@ module.exports = {
                 if(err){
                     console.log(err)
                     resolve();
-                }
-                
+                }        
                 else {
                     var done = false;
                     // Get db
@@ -94,6 +94,55 @@ module.exports = {
                         client.close();
                         resolve(result[0]);
                     });
+                }
+            });
+        });
+    },
+    addMember: function(req) {
+        return new Promise(function(resolve,reject) {
+            MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
+                if(err){
+                    console.log(err)
+                    resolve();
+                }        
+                else {
+                    var done = false;
+                    // Get db
+                    const db = client.db(dbname);
+
+                    // Get collection
+                    const collection = db.collection(dataCollection);
+                    collection.updateOne({"_id": ObjectId("60779c7e3b85d458c6a69cb0")},
+                                        { $push: {
+                                                "homePage.clubInfo.clubMembers": req.body.member
+                                            }
+                                        }, function(err) {
+                        if(err) { 
+                            console.log(err);
+                            resolve(false);
+                        }
+                                    //successfully added member to db
+                        else {
+                            resolve(true);
+                            console.log("added");
+                        }
+                        client.close();
+                    });
+                        
+                        
+                        /*req.body.member, function (err, docs) {
+                        if(err) { 
+                            console.log(err);
+                            resolve(false);
+                        }
+                                    //successfully added member to db
+                        else {
+                            resolve(true);
+                            console.log("added");
+                        }
+                        client.close();
+                    });*/
+                    
                 }
             });
         });
