@@ -44,7 +44,6 @@ const auth =  async (login) => {
             
     }
     else {
-        
         cookies.remove('token');
         cookies.remove('role');
         cookies.remove('email');

@@ -1,37 +1,28 @@
 //imports
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const accountManagement = require('./routes/api/accountManagement');
 const bodyParser = require('body-parser')
 const app = express();
 //middleware setup
-app.use(express.json());
-app.set('port', process.env.PORT || 3001);
+
+app.use(bodyParser.json({limit: '500mb'}));
+app.use(bodyParser.urlencoded({
+  parameterLimit: 100000,
+  limit: '500mb',
+  extended: true
+}));
+
 app.use(cors( {
   origin: 'http://localhost:3000',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }));
-app.use(bodyParser.urlencoded({
-  extended: true,
-  limit: '50mb',
-  parameterLimit: 100000
-  }))
-
- app.use(bodyParser.json({
-  limit: '50mb',
-  parameterLimit: 100000
- }))
 
 //function imports
 const mongo = require('./routes/api/accountManagement');
 const auth = require('./routes/api/auth');
 
-
-
-
-
-
+ 
 //new account request
 app.post('/signup', async (req, res) => {
   res.send(await mongo.connect(req.body,'signup'));
@@ -65,8 +56,11 @@ app.post('/auth', async (req, res) => {
 });
 
 app.post('/data', async (req, res) => {
+  console.log("hey")
   try {
-      res.send(await mongo.getData());
+      var data = await mongo.getData()
+      console.log(data)
+      res.send(data);
     }
     catch (error) {
       console.log(error);
@@ -75,8 +69,11 @@ app.post('/data', async (req, res) => {
 });
 
 
+
+
 app.post('/settings/addmember', async (req, res) => {
   console.log("attempting to add...")
+  
   try{
     
     //autheticate that admin is making the request
@@ -91,7 +88,7 @@ app.post('/settings/addmember', async (req, res) => {
     res.end();
 });
 
-
+app.set('port', process.env.PORT || 3001);
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {

@@ -12,25 +12,31 @@ import getData from "./getData"
 
 function HomeInfo() {
   const data = JSON.parse(localStorage.getItem("data"));
-  return( 
-    <div className = 'home-container'>
-      <div className="container-fluid" id = "aboutus-info-container">
-        <div className="col-md-12">
-            <div className="jumbotron">
-              <h2>
-                {data.homePage.clubInfo.about.header}
-              </h2>
-              <p>
-              {data.homePage.clubInfo.about.body}
-              </p>
-            </div>
-        </div>
+  try{
+    return( 
+      <div className = 'home-container'>
+        <div className="container-fluid" id = "aboutus-info-container">
+          <div className="col-md-12">
+              <div className="jumbotron">
+                <h2>
+                  {data.homePage.clubInfo.about.header}
+                </h2>
+                <p>
+                {data.homePage.clubInfo.about.body}
+                </p>
+              </div>
+          </div>
+      </div>
+      <div className = "container-fluid">
+        {members()}
     </div>
-    <div className = "container-fluid">
-       {members()}
-   </div>
-  </div>
-  );
+    </div>
+    );
+  }
+  catch (error) {
+    console.log(error);
+    return <div></div>
+  }
 }
 
 function Nav() {
@@ -76,7 +82,7 @@ function Nav() {
 }
 
 function Home() {
-  
+  getData()
   useEffect(() => {
     
     
