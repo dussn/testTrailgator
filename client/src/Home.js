@@ -1,9 +1,10 @@
 import "./App.css";
 //import "./Home.css";
-import React from "react";
+import React, { useEffect } from 'react';
 import Auth from './Login/auth';
 import Cookies  from 'universal-cookie';
 import members from './members';
+import auth from './Login/auth';
 //import vp
 //import sec
 import getData from "./getData"
@@ -75,7 +76,11 @@ function Nav() {
 }
 
 function Home() {
-  getData();
+  
+  useEffect(() => {
+    
+    
+    }, []);
   return (
     <div className="home-container">
       <Nav />

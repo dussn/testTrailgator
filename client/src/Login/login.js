@@ -4,6 +4,7 @@ import "./login.css";
 import history from './../history';
 import Cookies  from 'universal-cookie';
 import auth from './auth';
+import getData from "../getData"
 import {
   BrowserRouter as Router,
   Switch,
@@ -49,10 +50,10 @@ class LoginForm extends React.Component {
                   const token = response.data
                   const cookies = new Cookies();
                   cookies.set('token',token);
-                  
-                  auth(token);
+                  getData();
                   history.push('/')
-                  window.location.reload();
+                  auth(true);
+                  
                 }
                 
               })

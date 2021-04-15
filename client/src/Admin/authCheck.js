@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Cookies  from 'universal-cookie';
+import auth from '../Login/auth';
+
 
 
 class AuthCheck extends Component {

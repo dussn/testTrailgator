@@ -3,11 +3,25 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const accountManagement = require('./routes/api/accountManagement');
+const bodyParser = require('body-parser')
 const app = express();
-
 //middleware setup
 app.use(express.json());
 app.set('port', process.env.PORT || 3001);
+app.use(cors( {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}));
+app.use(bodyParser.urlencoded({
+  extended: true,
+  limit: '50mb',
+  parameterLimit: 100000
+  }))
+
+ app.use(bodyParser.json({
+  limit: '50mb',
+  parameterLimit: 100000
+ }))
 
 //function imports
 const mongo = require('./routes/api/accountManagement');
@@ -15,8 +29,8 @@ const auth = require('./routes/api/auth');
 
 
 
-//cors config
-app.use(cors());
+
+
 
 //new account request
 app.post('/signup', async (req, res) => {

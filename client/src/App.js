@@ -23,11 +23,13 @@ import Cookies  from 'universal-cookie';
 
 
 class App extends Component{
+  componentDidMount(){
+    //checks token every 5 seconds
+    this.timer = setInterval(()=> auth(false), 5000)
+  }
+
   constructor(props) {
     super();
-    const cookies = new Cookies();
-    const jwt = cookies.get('token');
-    auth(jwt);
   }
 
   render() {
@@ -39,7 +41,7 @@ class App extends Component{
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route path="/calendar" render={props => <Auth><Calendar {...props} /></Auth>} />
-          <Route path="/signout" render={props => <Auth><Signout {...props} /></Auth>} />
+          <Route exact path="/signout" component={Signout} />
           <Route path="/profile" render={props => <Auth><Profile {...props} /></Auth>} />
           <Route path="/settings" render={props => <AdminAuth><Settings {...props} /></AdminAuth>} />
         </Router>
@@ -49,3 +51,4 @@ class App extends Component{
 }
 
 export default App;
+//<Route path="/signout" render={props => <Auth><Signout {...props} /></Auth>} />
