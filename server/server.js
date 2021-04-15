@@ -26,10 +26,13 @@ app.post('/signup', async (req, res) => {
 
 //login requests
 app.post('/login', async (req, res) => {
-  if(await mongo.connect(req.body,'login')){
+  var userRole = 'member';
+  var ret = await mongo.connect(req.body,'login');
+  if(ret){
     //if password is valid generate access token to pass back to front
-    const token = auth.generateAccessToken({username: req.body.email});
-    console.log(token)
+    console.log(userRole);
+    const token = auth.generateAccessToken({username: req.body.email, role: ret.role});
+    //console.log(token)
     res.json(token);
   } else res.send(false);
   res.end();
@@ -46,6 +49,19 @@ app.post('/auth', async (req, res) => {
     }
     res.end();
 });
+
+app.post('/data', async (req, res) => {
+  //use this to prevent server from crashing due to invalid jwt tokens
+  try {
+      //console.log(await mongo.getData()); 
+      res.send(await mongo.getData());
+    }
+    catch (error) {
+      console.log(error);
+    }
+    res.end();
+});
+
 
 const PORT = process.env.PORT || 3001;
 

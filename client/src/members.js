@@ -1,11 +1,11 @@
 import React from "react";
-import { siteData } from "./info/data";
 import memberCard from './memberCard';
-//import pres from './info/images/test.PNG';
+
 
 function feed() {
+    const data = JSON.parse(localStorage.getItem("data"));
     var list = [];
-    for (var i = 0; i < siteData.homePage.clubInfo.clubmembers.length; i++) {
+    for (var i = 0; i < data.homePage.clubInfo.clubMembers.length; i++) {
         list[i] = memberCard(i);
     }
     return(list);

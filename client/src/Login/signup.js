@@ -41,7 +41,10 @@ class SignupForm extends React.Component {
           axios
           .post('http://localhost:3001/signup', account)
           .then(function (response) {
-            if(response.data) history.push('/login');
+            if(response.data) {
+              history.push('/login');
+              window.location.reload();
+            }
             else alert('An account with this email already exists!');
             
           })

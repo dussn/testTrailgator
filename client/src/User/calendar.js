@@ -10,10 +10,10 @@ const API_KEY = "AIzaSyDk4csiNvSTyVQE3aMZOZFJpqHuCasyqUg";
 
 let calendars = [
   { calendarId: "c_4hamaug2ns0tcivss6kg3hk2ug@group.calendar.google.com" },
-  { calendarId: "en.usa#holiday@group.v.calendar.google.com" },
-  {
+  //{ calendarId: "en.usa#holiday@group.v.calendar.google.com" },
+  /*{
     calendarId: "ncaaf_67_%46lorida+%47ators#sports@group.v.calendar.google.com"
-  }
+  }*/
 ];
 
 let styles = {
@@ -30,36 +30,38 @@ let styles = {
   `
 };
 
-export default function EventCalendar() {
-  return (
-      
-    <div className="App">
-    <div>
-            <nav>
-                <div className="form-check form-check-inline nowrap">
-                    <a className="nav-link" href="/"> Home</a> |
-                    <a className="nav-link" href="/profile"> Profile</a> |
-                    <a className="nav-link" href="/signout"> Sign Out</a>
+class EventCalendar extends React.Component {
+    render() {
+        return (
+            
+            <div className="CalendarApp">
+            <div>
+                    <nav>
+                        <div className="form-check form-check-inline nowrap">
+                            <a className="nav-link" href="/"> Home</a> |
+                            <a className="nav-link" href="/profile"> Profile</a> |
+                            <a className="nav-link" href="/signout"> Sign Out</a>
+                        </div>
+                
+                    </nav>
                 </div>
-        
-             </nav>
-        </div>
-      <body>
-        <div
-          style={{
-            width: "90%",
-            paddingTop: "50px",
-            paddingBottom: "50px",
-            margin: "auto",
-            maxWidth: "1200px"
-          }}
-        >
-          <Calendar apiKey={API_KEY} calendars={calendars} styles={styles} />
-        </div>
-      </body>
-    </div>
-  );
+            <body>
+                <div
+                style={{
+                    width: "90%",
+                    paddingTop: "50px",
+                    paddingBottom: "50px",
+                    margin: "auto",
+                    maxWidth: "1200px",
+                    
+                }}>
+                <Calendar apiKey={API_KEY} calendars={calendars} styles={styles}/>
+                </div>
+            </body>
+            </div>
+        );
+    }
 }
-
+export default EventCalendar;
 
 

@@ -12,6 +12,7 @@ class AuthCheck extends Component {
     };
   }
 
+//runs on stratup
   componentDidMount() {
     const { history } = this.props;
     const cookies = new Cookies();
@@ -40,3 +41,5 @@ class AuthCheck extends Component {
 }
 
 export default withRouter(AuthCheck);
+
+//used code from https://stackoverflow.com/questions/56746273/how-to-i-prevent-user-from-accessing-the-page-of-my-react-app-directly-by-enteri

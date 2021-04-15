@@ -4,7 +4,8 @@ const MongoClient = require('mongodb').MongoClient;
 const User = require('./hash'); 
 const uri = require('../../config/db').uri;
 const dbname = require('../../config/db').database;
-const collname = require('../../config/db').collection;
+const accountCollection = require('../../config/db').accountCollection;
+const dataCollection = require('../../config/db').dataCollection;
 Promise = require('promise');
 
 module.exports = {
@@ -19,7 +20,7 @@ module.exports = {
                     const db = client.db(dbname);
             
                     // Get collection
-                    const collection = db.collection(collname);
+                    const collection = db.collection(accountCollection);
                     
                     //make a query to the database to see if this email already has an account
                     var query = {email: account["email"]}
@@ -35,6 +36,7 @@ module.exports = {
                                 newUser.name = account["name"], 
                                 newUser.email = account["email"],
                                 newUser.password = account["password"]
+                                newUser.role = 'member';
                                 newUser.setPassword(account["password"]);
                                 console.log(newUser);
                                 
@@ -60,12 +62,37 @@ module.exports = {
                                 //hash password
                                 newUser.salt = result[0]["salt"];
                                 newUser.hash = result[0]["hash"];
+                                
                                 //store new user into db and resolve promise
-                                resolve(newUser.validPassword(account['password']));
+                                resolve({email: newUser.validPassword(account['password']), role: result[0]["role"]});
                             }
-                            else resolve(false);
+                            else resolve();
                         }
                         else client.close()
+                    });
+                }
+            });
+        });
+    },
+    getData: function() {
+        return new Promise(function(resolve,reject) {
+            MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, client) {
+                if(err){
+                    console.log(err)
+                    resolve();
+                }
+                
+                else {
+                    var done = false;
+                    // Get db
+                    const db = client.db(dbname);
+
+                    // Get collection
+                    const collection = db.collection(dataCollection);
+                    collection.find().toArray(function(err, result) {
+                        if (err) throw err;
+                        client.close();
+                        resolve(result[0]);
                     });
                 }
             });

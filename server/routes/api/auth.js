@@ -29,7 +29,7 @@ module.exports = {
                     if(result)
                     {
                         //if token successfully decodes resolve the promise with the email
-                        resolve(result['username']);
+                        resolve(result);
                     }
                     else resolve(false);
                     

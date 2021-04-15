@@ -9,10 +9,14 @@ function Signout() {
   //this will remove the jwt access token and set isauth to false on load
   useEffect(() => {
     const cookies = new Cookies();
-    cookies.remove("token");
+    //unauthenticate user
     cookies.set("isAuth",false);
-    //in the case user is logged in as admin
-    cookies.remove("isAdmin");
+    //remove all tokens
+
+    cookies.remove("token");
+    cookies.remove("role");
+    cookies.remove("email");
+    window.location.reload();
     }, []);
 
     //redirects the page to home
