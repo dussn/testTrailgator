@@ -6,6 +6,7 @@ import Compress from "browser-image-compression";
 import auth from '../Login/auth';
 import "./settings.css";
 import accountDisp from './accountDisp';
+import getAccounts from './getAccounts'
 const validator = require('email-validator');
 const hierachy = ['member', 'admin', 'owner'];
 
@@ -24,6 +25,7 @@ class Settings extends React.Component {
       this.handleChangeAccountRoleSubmit = this.handleChangeAccountRoleSubmit.bind(this);
       this.handleChangeBoxSubmit = this.handleChangeBoxSubmit.bind(this);
       this.handleRemoveAllMemberSubmit = this.handleRemoveAllMemberSubmit.bind(this);
+      getAccounts();
     }
 
     
@@ -297,7 +299,7 @@ class Settings extends React.Component {
                                 </div>
                                 <div className = 'col'>
                                     <h4>Club Members</h4>
-                                   <ul class="list-group">
+                                   <ul className="list-group">
                                     {accountDisp()}
                                     </ul>
                                 </div>

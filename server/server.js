@@ -395,3 +395,28 @@ app.post('/settings/editsiteinfo', async (req, res) => {
     res.end()
   }
 });
+
+app.post('/settings/accounts', async (req, res) => {
+  
+  try{
+    var role = (await auth.authenticateToken(req)).role
+    //autheticate that admin is making the request
+    if(role == 'admin' || role == 'owner' ) {  
+      var info = await accountCollection.find().toArray();
+      var list = []
+      for(var i = 0; i<info.length; i++){
+        list.push({
+          name: info[i].name,
+          email: info[i].email,
+          role: info[i].role
+        })
+      }
+      res.send(list);
+    }
+    else res.end();
+  }
+  catch (error) {
+    console.log(error);
+    res.end()
+  }
+});

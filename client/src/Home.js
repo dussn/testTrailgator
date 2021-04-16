@@ -82,6 +82,7 @@ function Nav() {
 
 function Home() {
   getData()
+  localStorage.removeItem("account")
   return (
     <div className="home-container">
       <Nav />
