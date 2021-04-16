@@ -6,7 +6,6 @@ const app = express();
 const MongoClient = require('mongodb').MongoClient;
 
 //function imports
-const mongo = require('./routes/api/accountManagement');
 const auth = require('./routes/api/auth');
 
 
@@ -33,6 +32,7 @@ const acountColname = require('./config/db').accountCollection;
 const dataColname = require('./config/db').dataCollection;
 const User = require('./routes/api/hash');
 const ObjectId = require('mongodb').ObjectId; 
+const hierachy = ['member', 'admin', 'owner'];
 
 let dbClient;
 let accountCollection;
@@ -131,15 +131,13 @@ app.post('/auth', async (req, res) => {
     }
     catch (error) {
       console.log(error);
+      res.end();
     }
-    res.end();
 });
 
 //returns site data to front
 app.post('/data', async (req, res) => {
-  try {
-    
-    
+  try { 
     dataCollection.find().toArray(function(err, result) {
       if (err) {
         console.log(err);
@@ -176,7 +174,7 @@ app.post('/settings/addmember', async (req, res) => {
           }
                       //successfully added member to db
           else {
-              res.send(true);
+              res.send({status: "true"});
               console.log("added");
           }
       });
@@ -306,5 +304,93 @@ app.post('/settings/removeaccount', async (req, res) => {
   catch (error) {
     console.log(error);
     res.send({status: "false"});
+  }
+});
+
+
+app.post('/settings/changerole', async (req, res) => {
+  console.log("attempting to change role of  "+ req.body.email + " to " +req.body.role + " ...")
+  var ret;
+  try{
+    var role = (await auth.authenticateToken(req)).role
+    //role we will be setting account to
+    var roleChange = req.body.role;
+    //autheticate that admin is making the request
+    if(hierachy.indexOf(role)>0) {  
+      
+      var changeAccount = await accountCollection.find({"email":  req.body.email}).toArray();
+      //current role of the account
+      
+      var changeRole = changeAccount[0].role;
+      
+      if(role == "owner") {
+        
+        //check to make sure one other owner account exists if we are changing an account off owner
+        if(changeRole == 'owner') {
+          var check = await accountCollection.find({"role":  "owner"}).toArray();
+          //if not empty another owner account exists we may delete this one
+          console.log(check.length)
+          if (check.length>1){
+            //change account role
+            await accountCollection.updateOne({"email":  req.body.email},
+                                              {$set: {"role": roleChange} });
+            console.log("account role changed")
+            ret = true;
+          }
+          else {
+            ret = false;
+            console.log("role change failed: there is only one owner")
+          }
+        } else if (changeRole != "owner") {
+         await accountCollection.updateOne({"email":  req.body.email},
+                                         {$set: {"role": roleChange} });
+          console.log("test")
+          console.log("account role changed")
+          ret = true;
+          
+        }
+      } 
+      else if (role == 'admin'){
+        //admins can only change roles of members, not other admins or owners
+        if((changeRole != 'admin' && changeRole != 'owner') && roleChange != "owner"){
+          //remove account
+          await accountCollection.updateOne({"email":  req.body.email},
+                                              {$set: {"role": roleChange} });
+          console.log("account role changed")
+          ret = true;
+        }
+        else  {
+          console.log("role change failed: You do not have permission")
+          ret = false;
+        }
+      }
+
+    }
+    else ret = false;
+  }
+  catch (error) {
+    console.log(error);
+    ret = false;
+  }
+  //res.send(ret);
+  console.log("finished")
+  res.send(ret);
+});
+
+app.post('/settings/editsiteinfo', async (req, res) => {
+  console.log("attempting to edit info ...")
+  
+  try{
+    var role = (await auth.authenticateToken(req)).role
+    //autheticate that admin is making the request
+    if(role == 'admin' || role == 'owner' ) {  
+      await dataCollection.updateOne({}, {$set: {"DisplayBox.BoxTitle": req.body.boxTitle}});
+      await dataCollection.updateOne({}, {$set: {"DisplayBox.BoxInfo": req.body.boxInfo}});
+    }
+    else res.end();
+  }
+  catch (error) {
+    console.log(error);
+    res.end()
   }
 });

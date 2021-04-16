@@ -5,7 +5,8 @@ import Cookies  from 'universal-cookie';
 import Compress from "browser-image-compression";
 import auth from '../Login/auth';
 import "./settings.css";
-
+const validator = require('email-validator');
+const hierachy = ['member', 'admin', 'owner'];
 
 
 class Settings extends React.Component {
@@ -65,8 +66,7 @@ class Settings extends React.Component {
             })
     }
     handleAddMemberSubmit = async(e) =>{
-
-        
+        //function for adding new important members to display
         const cookies = new Cookies();
         const jwt = cookies.get('token');
         auth(jwt)
@@ -83,13 +83,13 @@ class Settings extends React.Component {
         }
         axios.post('http://localhost:3001/settings/addmember',request)
             .then(function (response) {
-                if(response.data == "true") alert("Successfully added")
+                if(response.data === "true") alert("Successfully added")
                 localStorage.removeItem("img")
         });
         
     }
     handleRemoveMemberSubmit = async(e) => {
-        //add function to post to backend and remove that display memeber
+        //function to remove member by name
         e.preventDefault();
         const cookies = new Cookies();
         const jwt = cookies.get("token");
@@ -107,7 +107,7 @@ class Settings extends React.Component {
 
     }
     handleRemoveAccountSubmit = async(e) => {
-        //add function to post to backend and remove that display memeber
+        //function to remove an account by email
         e.preventDefault();
         const cookies = new Cookies();
         const jwt = cookies.get("token");
@@ -124,12 +124,45 @@ class Settings extends React.Component {
         })
     }
     handleChangeAccountRoleSubmit = async(e) => {
-        //add function to post to backend and remove that display memeber
-        alert(this.state.changeRole)
+        //function to cahne roles of an account
+        e.preventDefault();
+        if(!validator.validate(this.state.changeEmail)) alert("Must be a valid email!")
+        else if(hierachy.includes(this.state.changeRole)){  
+            const cookies = new Cookies();
+            const jwt = cookies.get("token");
+            await auth(jwt);
+            const role = cookies.get("role");
+            if(hierachy.indexOf(this.state.changeRole)<=hierachy.indexOf(role)){
+                var request = {
+                code: jwt,
+                email: this.state.changeEmail,
+                role: this.state.changeRole
+                }
+                await axios.post('http://localhost:3001/settings/changerole',request,{timeout: 100}).catch(e => alert(e));
+                window.location.reload();
+            } else alert("You do not have permission to do this!")      
+        } else {
+            alert("Roles can only be set to member, admin, or owner!")
+        }
+        
     }
     handleChangeBoxSubmit = async(e) => {
         //add function to post to backend and remove that display memeber
-        alert(this.state.boxTitle)
+        e.preventDefault();
+        const cookies = new Cookies();
+        const jwt = cookies.get("token");
+        auth(jwt);
+        var request = {
+            code: jwt,
+            boxTitle: this.state.boxTitle,
+            boxInfo: this.state.boxInfo
+        }
+        axios.post('http://localhost:3001/settings/editsiteinfo',request)
+        .then(function(response) {
+            if(!response.data)
+                alert("Role Change Failed")
+            else alert("Role successsfully changed")
+        })
     }
     handleRemoveAllMemberSubmit(e) {
         e.preventDefault();
@@ -208,7 +241,7 @@ class Settings extends React.Component {
                                     <input type="text" className ='form-control' name = 'addEmail' placeholder = 'Email' value={this.state.addEmail}  onChange={this.handleChange}/>
                                 </div>
                                 <div className = 'input-group mb-3'>
-                                    <textarea class="form-control" name="addAbout" placeholder = 'About' rows="4" value={this.state.addAbout} onChange={this.handleChange}/>
+                                    <textarea className="form-control" name="addAbout" placeholder = 'About' rows="4" value={this.state.addAbout} onChange={this.handleChange}/>
                                 </div>
                                 <div className="input-group mb-3">
                                     <input
@@ -259,7 +292,7 @@ class Settings extends React.Component {
                                     <input type="text" className ='form-control'name = 'boxTitle' placeholder = 'Box Title' value={this.state.boxTitle}  onChange={this.handleChange}/>
                                 </div>
                                 <div className = 'input-group mb-3' id = 'box'>
-                                        <textarea class="form-control" name="boxInfo" placeholder = 'Box Information' rows="4" value={this.state.boxInfo} onChange={this.handleChange}/>
+                                        <textarea className="form-control" name="boxInfo" placeholder = 'Box Information' rows="4" value={this.state.boxInfo} onChange={this.handleChange}/>
                                 </div>
                                  <input className = 'submit' type="submit" value = 'Change Info'  name = "submit button" />
                             </form>

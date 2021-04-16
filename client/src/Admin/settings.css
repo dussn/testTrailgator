@@ -23,3 +23,6 @@ h4{
 .submit{
     margin-bottom: 5%;
 }
+.form-control{
+    resize: none;
+}
