@@ -6,7 +6,7 @@ jobs:
     executor:
       name: node/default
       tag: '10.4'
-    working_directory: ~/Trail-Gators/server
+    working_directory: ~/project
     steps:
       - checkout
       - node/with-cache:
