@@ -10,7 +10,7 @@ function feed() {
     try {
         for (var i = 0; i < data.length; i++) {
         list[i] = <li className="list-group-item">
-                    {data[i].name},  {data[i].email}, {data[i].role}</li>;
+                    {data[i].email},  {data[i].name}, {data[i].role}</li>;
         }
         return(list)
     } catch (e) {     
