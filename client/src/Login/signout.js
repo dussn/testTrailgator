@@ -6,8 +6,10 @@ import {
 } from "react-router-dom";
 
 function Signout() {
+  //alert("test")
   //this will remove the jwt access token and set isauth to false on load
   useEffect(() => {
+    
     const cookies = new Cookies();
     //unauthenticate user
     cookies.set("isAuth",false);

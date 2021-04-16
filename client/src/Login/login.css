@@ -1,17 +1,5 @@
 
-.input-group {
-    width: 20%;
+.loginForm {
+    width: 30%;
     margin: auto;
-}
-
-.submit {
-    width: 20%;
-}
-
-.text {
-    width: 20%;
-}
-
-.password {
-    width: 20%;
 }

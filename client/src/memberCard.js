@@ -1,23 +1,39 @@
 import React from "react";
-import axios from 'axios';
 import Cookies  from 'universal-cookie';
+import "./memberCard.css";
+import getData from "./getData"
 
 
 
 function memberCard(mn) {
-    const data = JSON.parse(localStorage.getItem("data"));
+  
+   try {
+    var data = {};
+    getData().then(
+
+      data = JSON.parse(localStorage.getItem("data")),
+
+    );
     
-    
+    //alert(dat)
+    //const data = {}//JSON.parse(dat);
+     
+   //const encodedData = data.image;
     return (
         <div className="col-md-4">
           <div className="card">
-            <img className="card-img-top" id  = 'load-img' src = {process.env.PUBLIC_URL + "./images/test.PNG"}/>
+            <div className = "img-holder">
+              <img className="card-img-top" id ='load-img' src = {"data:image/jpeg;base64", data.DisplayedClubMembers[mn].image}/>
+            </div>
             <div className="card-block">
               <h5 className="card-title">
-                {data.homePage.clubInfo.clubMembers[mn].name}
+                {data.DisplayedClubMembers[mn].name}
+              </h5>
+              <h5 className="card-title">
+                {data.DisplayedClubMembers[mn].position}
               </h5>
               <p className="card-text">
-                {data.homePage.clubInfo.clubMembers[mn].about}
+                {data.DisplayedClubMembers[mn].about}
               </p>
               <p>
                 <a className="btn btn-primary" href="#">Contact</a>
@@ -26,5 +42,11 @@ function memberCard(mn) {
           </div>
         </div>
     );
+   }
+    catch (error) {
+      console.log(error);
+      return <div></div>
+   }
+   
 }
 export default memberCard;

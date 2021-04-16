@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import history from './../history';
+import "./signup.css";
+
 
 const validator = require('email-validator');
 class SignupForm extends React.Component {
@@ -64,7 +66,7 @@ class SignupForm extends React.Component {
               <a className="nav-link" href="/"> Home</a> 
           </nav>
           <div className = 'container'>
-            <form onSubmit={this.handleSubmit}>
+            <form className = 'signupForm' onSubmit={this.handleSubmit}>
               <div className = 'input-group mb-3'>
                 <input type="text" className ='form-control' placeholder = 'Name' value={this.state.nameValue} name="nameField" onChange={this.handleChange}  />
               </div>
