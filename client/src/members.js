@@ -5,7 +5,7 @@ import memberCard from './memberCard';
 function feed() {
     const data = JSON.parse(localStorage.getItem("data"));
     var list = [];
-    for (var i = 0; i < data.homePage.clubInfo.clubMembers.length; i++) {
+    for (var i = 0; i < data.DisplayedClubMembers.length; i++) {
         list[i] = memberCard(i);
     }
     return(list);

@@ -17,6 +17,10 @@
       "type": "image/png",
       "sizes": "512x512"
     }
+    
+  ],
+  "optional_permissions": [
+    "unlimitedStorage"
   ],
   "start_url": ".",
   "display": "standalone",

@@ -5,8 +5,6 @@ import Auth from './Login/auth';
 import Cookies  from 'universal-cookie';
 import members from './members';
 import auth from './Login/auth';
-//import vp
-//import sec
 import getData from "./getData"
 
 
@@ -19,14 +17,15 @@ function HomeInfo() {
           <div className="col-md-12">
               <div className="jumbotron">
                 <h2>
-                  {data.homePage.clubInfo.about.header}
+                  {data.DisplayBox.BoxTitle}
                 </h2>
                 <p>
-                {data.homePage.clubInfo.about.body}
+                {data.DisplayBox.BoxInfo}
                 </p>
               </div>
           </div>
       </div>
+      <h2>Our Members</h2>
       <div className = "container-fluid">
         {members()}
     </div>
@@ -83,10 +82,6 @@ function Nav() {
 
 function Home() {
   getData()
-  useEffect(() => {
-    
-    
-    }, []);
   return (
     <div className="home-container">
       <Nav />

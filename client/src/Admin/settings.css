@@ -1,3 +1,25 @@
 .container-fluid {
     width: 60%;
 }
+.col-md-6 {
+    margin-bottom: 5%;;
+}
+.holder-left{
+    margin-left: 50%;
+}
+.holder-right{
+    margin-right: 50%;
+}
+.submit{
+    width: 100%;
+}
+h4{
+   margin-top: 10px;
+}
+.holder-center {
+    width: 50%;
+    margin: auto;
+}
+.submit{
+    margin-bottom: 5%;
+}

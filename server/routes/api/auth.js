@@ -10,7 +10,7 @@ process.env.TOKEN_SECRET;
 module.exports = {
     generateAccessToken: function(username) {
         //generates signed jwt storing the users email
-        return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
+        return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '3600s' });
       },
 
     authenticateToken: function (req) {

@@ -12,46 +12,27 @@ class Settings extends React.Component {
     
     constructor(props) {
       super(props);
-      this.state = {name: '', position: '', email: '', image: ''};
+      this.state = {addName: '', addPosition: '', addAbout: '', addEmail: '',
+                    removeName: '', removeAccountEmail: '', changeEmail: '', changeRole: '',
+                    boxTitle: '', boxInfo: ''};
       this.handleChange = this.handleChange.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
-      this.onChange = this.onChange.bind(this);
+      this.handleAddMemberSubmit = this.handleAddMemberSubmit.bind(this);
+      this.onImageChange = this.onImageChange.bind(this);
+      this.handleRemoveAccountSubmit = this.handleRemoveAccountSubmit.bind(this);
+      this.handleChangeAccountRoleSubmit = this.handleChangeAccountRoleSubmit.bind(this);
+      this.handleChangeBoxSubmit = this.handleChangeBoxSubmit.bind(this);
+      this.handleRemoveAllMemberSubmit = this.handleRemoveAllMemberSubmit.bind(this);
     }
 
-    handleSubmit = async(e) =>{
-
-        
-        const cookies = new Cookies();
-        const jwt = cookies.get('token');
-        auth(jwt)
-            const member = {
-                name: this.state.name,
-                postion: this.state.position,
-                email: this.state.email,
-                image: localStorage.getItem("img")
-            }
-            const request = {
-                code: jwt,
-                member: member
-            }
-            axios.post('http://localhost:3001/settings/addmember',request)
-                .then(function (response) {
-                    alert(response.data)
-            });
-        
-    }
-    onChange = (e) => {
-        // Get the files selected from the input tag
-        // On select files always come in an array even
-        // if you choose one its the first index
-        // if you selected a couple then loop through the array
+    
+    //used code from https://dev.to/tesh254/compress-images-in-react-browser-image-compression-libary-3cja
+    onImageChange = (e) => {
         const file = e.target.files[0]
-
         // Compression config
         const options = {
             // As the key specify the maximum size
             // Leave blank for infinity
-            maxSizeMB: 1,
+            maxSizeMB: 2,
             // Use webworker for faster compression with
             // the help of threads
             useWebWorker: true
@@ -68,7 +49,6 @@ class Settings extends React.Component {
                 // If you want to work with the File
                 // Let's convert it here, by adding a couple of attributes
                 compressedBlob.lastModifiedDate = new Date()
-
                 // Convert the blob to file
                 const convertedBlobFile = new File([compressedBlob], file.name, { type: file.type, lastModified: Date.now()})
                 //convert to base64 then set this state image to the base64
@@ -78,24 +58,124 @@ class Settings extends React.Component {
                     var base64data = reader.result;                
                     localStorage.setItem("img",base64data)
                     }
-                // Here you are free to call any method you are gonna use to upload your file example uploadToCloudinaryUsingPreset(convertedBlobFile)
             })
             .catch(e => {
                 console.log(e);
                 // Show the user a toast message or notification that something went wrong while compressing file
             })
     }
+    handleAddMemberSubmit = async(e) =>{
+
+        
+        const cookies = new Cookies();
+        const jwt = cookies.get('token');
+        auth(jwt)
+        const member = {
+            name: this.state.addName,
+            position: this.state.addPosition,
+            about: this.state.addAbout,
+            email: this.state.addEmail,
+            image: localStorage.getItem("img")
+        }
+        const request = {
+            code: jwt,
+            member: member
+        }
+        axios.post('http://localhost:3001/settings/addmember',request)
+            .then(function (response) {
+                if(response.data == "true") alert("Successfully added")
+                localStorage.removeItem("img")
+        });
+        
+    }
+    handleRemoveMemberSubmit = async(e) => {
+        //add function to post to backend and remove that display memeber
+        e.preventDefault();
+        const cookies = new Cookies();
+        const jwt = cookies.get("token");
+        auth(jwt);
+        var request = {
+            code: jwt,
+            name: this.state.removeName
+        }
+        axios.post('http://localhost:3001/settings/removemember',request)
+        .then(function(response) {
+            if(!response.data)
+                alert("Remove all failed")
+            else alert("All Displays Removed")
+        })
+
+    }
+    handleRemoveAccountSubmit = async(e) => {
+        //add function to post to backend and remove that display memeber
+        e.preventDefault();
+        const cookies = new Cookies();
+        const jwt = cookies.get("token");
+        auth(jwt);
+        var request = {
+            code: jwt,
+            email: this.state.removeAccountEmail
+        }
+        axios.post('http://localhost:3001/settings/removeaccount',request)
+        .then(function(response) {
+            if(!response.data)
+                alert("Failed to remove account")
+            else alert("Account Removed")
+        })
+    }
+    handleChangeAccountRoleSubmit = async(e) => {
+        //add function to post to backend and remove that display memeber
+        alert(this.state.changeRole)
+    }
+    handleChangeBoxSubmit = async(e) => {
+        //add function to post to backend and remove that display memeber
+        alert(this.state.boxTitle)
+    }
+    handleRemoveAllMemberSubmit(e) {
+        e.preventDefault();
+        const cookies = new Cookies();
+        const jwt = cookies.get("token");
+        auth(jwt);
+        axios.post('http://localhost:3001/settings/removeall',{code: jwt})
+        .then(function(response) {
+            alert("hey")
+            if(!response.data)
+                alert("Removeall failed")
+            else alert("All Displays Removed")
+        })
+    }
     handleChange(event) {
         //alert(event.target.placeholder)
         switch(event.target.name) {
-            case "name":
-                this.setState({name: event.target.value})
+            case "addName":
+                this.setState({addName: event.target.value})
                 break;
-            case "position":
-                this.setState({position: event.target.value})
+            case "addPosition":
+                this.setState({addPosition: event.target.value})
                 break;
-            case "email":
-                this.setState({email: event.target.value})
+            case "addAbout":
+                this.setState({addAbout: event.target.value});
+                break;
+            case "addEmail":
+                this.setState({addEmail: event.target.value})
+                break;
+            case "removeName":
+                this.setState({removeName: event.target.value})
+                break;
+            case "removeAccountEmail":
+                this.setState({removeAccountEmail: event.target.value})
+                break;
+            case "changeEmail":
+                this.setState({changeEmail: event.target.value})
+                break;
+            case "changeRole":
+                this.setState({changeRole: event.target.value})
+                break;
+            case "boxTitle":
+                this.setState({boxTitle: event.target.value})
+                break;
+            case "boxInfo":
+                this.setState({boxInfo: event.target.value})
                 break;
         }
     }
@@ -113,30 +193,78 @@ class Settings extends React.Component {
                     </nav>
                 </div> 
                 <br></br>
-                <div className = "container-fluid">
-                    <form onSubmit={this.handleSubmit}>
-                        <h4>Add Member</h4>
-                        <div className = 'input-group mb-3'>
-                            <input type="text" className ='form-control'name = 'name' placeholder = 'Name' value={this.state.name}  onChange={this.handleChange}/>
+                <div className = "container-fluid"> 
+                    <div className='row'>
+                        <div className = 'col-md-6'>
+                            <form className = "holder-left" onSubmit={this.handleAddMemberSubmit}>
+                                <h4>Add Display Member</h4>
+                                <div className = 'input-group mb-3'>
+                                    <input type="text" className ='form-control'name = 'addName' placeholder = 'Name' value={this.state.addName}  onChange={this.handleChange}/>
+                                </div>
+                                <div className = 'input-group mb-3'>
+                                    <input type="text" className ='form-control' name = 'addPosition' placeholder = 'Position' value={this.state.addPosition}  onChange={this.handleChange}/>
+                                </div>
+                                <div className = 'input-group mb-3'>
+                                    <input type="text" className ='form-control' name = 'addEmail' placeholder = 'Email' value={this.state.addEmail}  onChange={this.handleChange}/>
+                                </div>
+                                <div className = 'input-group mb-3'>
+                                    <textarea class="form-control" name="addAbout" placeholder = 'About' rows="4" value={this.state.addAbout} onChange={this.handleChange}/>
+                                </div>
+                                <div className="input-group mb-3">
+                                    <input
+                                    type="file"
+                                    name="file"
+                                    id="input-files"
+                                    className="form-control-file border"
+                                    onChange={this.onImageChange}
+                                    />
+                                </div>
+                                <input className = 'submit' type="submit" value = 'Add Member'  name = "submit button" />
+                            </form>
+                        </div> 
+                        <div className = 'col-md-6'>
+                            <form className = "holder-right" onSubmit={this.handleRemoveMemberSubmit}>
+                                <h4>Remove Display Member</h4>
+                                <div className = 'input-group mb-3'>
+                                    <input type="text" className ='form-control' name = 'removeName' placeholder = 'Name' value={this.state.removeName}  onChange={this.handleChange}/>
+                                </div>
+                                <input className = 'submit' type="submit" value = 'Remove Member'  name = "submit button" />
+                            </form>
+                            
+                            <form className = "holder-right" onSubmit={this.handleRemoveAllMemberSubmit}>
+                                <input className = 'submit' type="submit" value = 'Remove All Display Members'  name = "submit button" />
+                            </form>
+                            <form className = "holder-right" onSubmit={this.handleRemoveAccountSubmit}>
+                                <h4>Remove Account</h4>
+                                <div className = 'input-group mb-3'>
+                                    <input type="text" className ='form-control'name = 'removeAccountEmail' placeholder = 'Email' value={this.state.removeAccountEmail}  onChange={this.handleChange}/>
+                                </div>
+                                <input className = 'submit' type="submit" value = 'Remove Account'  name = "submit button" />
+                            </form>
+                            <form className = "holder-right" onSubmit={this.handleChangeAccountRoleSubmit}>
+                                <h4>Change Account Role</h4>
+                                <div className = 'input-group mb-3'>
+                                    <input type="text" className ='form-control'name = 'changeEmail' placeholder = 'Email' value={this.state.changeEmail}  onChange={this.handleChange}/>
+                                </div>
+                                <div className = 'input-group mb-3'>
+                                    <input type="text" className ='form-control'name = 'changeRole' placeholder = 'Role' value={this.state.changeRole}  onChange={this.handleChange}/>
+                                </div>
+                                <input className = 'submit' type="submit" value = 'Change Role'  name = "submit button" />
+                            </form>
+                        </div> 
+                        <div className = 'col-md-12'>
+                            <form className = 'holder-center' onSubmit={this.handleChangeBoxSubmit}>
+                                <h4>Front Page Information</h4>
+                                <div className = 'input-group mb-3' id = 'box'>
+                                    <input type="text" className ='form-control'name = 'boxTitle' placeholder = 'Box Title' value={this.state.boxTitle}  onChange={this.handleChange}/>
+                                </div>
+                                <div className = 'input-group mb-3' id = 'box'>
+                                        <textarea class="form-control" name="boxInfo" placeholder = 'Box Information' rows="4" value={this.state.boxInfo} onChange={this.handleChange}/>
+                                </div>
+                                 <input className = 'submit' type="submit" value = 'Change Info'  name = "submit button" />
+                            </form>
                         </div>
-                        <div className = 'input-group mb-3'>
-                            <input type="text" className ='form-control' name = 'position' placeholder = 'Position' value={this.state.position}  onChange={this.handleChange}/>
-                        </div>
-                        <div className = 'input-group mb-3'>
-                            <input type="text" className ='form-control' name = 'email' placeholder = 'Email' value={this.state.email}  onChange={this.handleChange}/>
-                        </div>
-                        
-                        <div className="input-group mb-3">
-                            <input
-                            type="file"
-                            name="file"
-                            id="input-files"
-                            className="form-control-file border"
-                            onChange={this.onChange}
-                            />
-                        </div>
-                        <input className = 'submit' type="submit" value = 'Add Member'  name = "submit button" />
-                    </form>
+                    </div>   
                 </div>
             </div>
             

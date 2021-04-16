@@ -1,4 +1,3 @@
-import "./App.css";
 import React, { Component, useEffect  } from 'react';
 import {
   BrowserRouter as Router,
