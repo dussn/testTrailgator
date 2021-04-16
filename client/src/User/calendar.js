@@ -2,6 +2,8 @@ import React from "react";
 import "./calendar.css";
 import Calendar from "@ericz1803/react-google-calendar";
 import { css } from "@emotion/react";
+import Cookies  from 'universal-cookie';
+
 
 //put your google calendar api key here
 const API_KEY = "AIzaSyDk4csiNvSTyVQE3aMZOZFJpqHuCasyqUg";
@@ -30,35 +32,46 @@ let styles = {
   `
 };
 
+function navBar() {
+  const cookies = new Cookies();
+  const isAuth = cookies.get('isAuth') == 'true';
+  const isAdmin = cookies.get('role') == 'admin' || cookies.get('role') == 'owner';
+  if(isAdmin)
+  {
+    return (
+      <div className="form-check form-check-inline nowrap">
+        <a className="nav-link" href="/"> Home</a> |
+        <a className="nav-link" href="/profile"> Profile</a> |
+        <a className="nav-link" href="/settings"> Settings</a> |
+        <a className="nav-link" href="/signout"> Sign Out</a>
+      </div>
+    );
+  }
+  else return (
+     <div className="form-check form-check-inline nowrap">
+        <a className="nav-link" href="/"> Home</a> |
+        <a className="nav-link" href="/profile"> Profile</a> |
+        <a className="nav-link" href="/signout"> Sign Out</a>
+    </div>
+    
+    );
+}
+
 class EventCalendar extends React.Component {
     render() {
         return (
             
             <div className="CalendarApp">
+              <div>
+                  <nav>
+                     {navBar()}
+
+                  </nav>
+              </div>
             <div>
-                    <nav>
-                        <div className="form-check form-check-inline nowrap">
-                            <a className="nav-link" href="/"> Home</a> |
-                            <a className="nav-link" href="/profile"> Profile</a> |
-                            <a className="nav-link" href="/signout"> Sign Out</a>
-                        </div>
-                
-                    </nav>
-                </div>
-            <body>
-                <div
-                style={{
-                    width: "90%",
-                    paddingTop: "50px",
-                    paddingBottom: "50px",
-                    margin: "auto",
-                    maxWidth: "1200px",
-                    
-                }}>
-                <Calendar apiKey={API_KEY} calendars={calendars} styles={styles}/>
-                </div>
-            </body>
+              <iframe src="https://calendar.google.com/calendar/embed?src=c_4hamaug2ns0tcivss6kg3hk2ug%40group.calendar.google.com&ctz=America%2FNew_York"  width="1000" height="700" frameborder="0" scrolling="no"></iframe>      
             </div>
+          </div>
         );
     }
 }

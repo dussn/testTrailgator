@@ -230,8 +230,8 @@ class Settings extends React.Component {
                     <nav>
                         <div className="form-check form-check-inline nowrap">
                             <a className="nav-link" href="/"> Home</a> |
-                            <a className="nav-link" href="/calendar"> Calendar</a> |
                             <a className="nav-link" href="/profile"> Profile</a> |
+                            <a className="nav-link" href="/calendar"> Calendar</a> |
                             <a className="nav-link" href="/signout"> Sign Out</a>
                         </div>  
                     </nav>
