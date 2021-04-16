@@ -23,6 +23,9 @@ app.use(cors( {
   optionsSuccessStatus: 200
 }));
 
+app.set('port', process.env.PORT || 3001);
+const PORT = process.env.PORT || 3001;
+
 //database info
 const uri = require('./config/db').uri;
 const dbname = require('./config/db').database;
@@ -31,18 +34,11 @@ const dataColname = require('./config/db').dataCollection;
 const User = require('./routes/api/hash');
 const ObjectId = require('mongodb').ObjectId; 
 
-
-app.set('port', process.env.PORT || 3001);
-const PORT = process.env.PORT || 3001;
-
-
-
 let dbClient;
 let accountCollection;
 let dataCollection;
 
-
-
+//connect to database
 MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(client => {
   dbClient = client;
