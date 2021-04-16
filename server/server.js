@@ -420,3 +420,22 @@ app.post('/settings/accounts', async (req, res) => {
     res.end()
   }
 });
+
+app.post('/profile', async (req, res) => {
+  try{
+    var account = (await auth.authenticateToken(req)).email;
+    var query = {email: account}
+    accountCollection.find(query).toArray(function(err, result) {
+      var ret = {
+          name: result[0].name,
+          email: result[0].email,
+          role: result[0].role
+        }
+        res.send(ret);
+    });
+  }
+  catch (error) {
+    console.log(error);
+    res.end()
+  }
+});

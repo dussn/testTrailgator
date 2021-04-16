@@ -144,14 +144,14 @@ class Settings extends React.Component {
                 email: this.state.changeEmail,
                 role: this.state.changeRole
                 }
-                axios.post('http://localhost:3001/settings/changerole',request,{timeout: 100})
-                .then(function(response) {
-                    if(response.data) alert("Account " + request.email +"'s role changed to " + request.role)
-                    else alert("Role Change Unsuccessful")
+                if(request.role != "owner" || (request.role =="owner" && window.confirm("Are you sure you want to do this? Owners can remove other owners"))){
+                    axios.post('http://localhost:3001/settings/changerole',request,{timeout: 100})
+                    .then(function(response) {
+                        if(response.data) alert("Account " + request.email +"'s role changed to " + request.role)
+                        else alert("Role Change Unsuccessful")
                     //window.location.reload();
-                }).catch(e => alert(e));
-                
-                //
+                    }).catch(e => alert(e));
+                }
             } else alert("You do not have permission to do this!")      
         } else {
             alert("Roles can only be set to member, admin, or owner!")

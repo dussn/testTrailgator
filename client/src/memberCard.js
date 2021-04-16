@@ -12,9 +12,9 @@ function memberCard(mn) {
     getData().then(
 
       data = JSON.parse(localStorage.getItem("data")),
-
+      
     );
-    
+    var ref = "mailto:"+data.DisplayedClubMembers[mn].email
     //alert(dat)
     //const data = {}//JSON.parse(dat);
      
@@ -36,7 +36,8 @@ function memberCard(mn) {
                 {data.DisplayedClubMembers[mn].about}
               </p>
               <p>
-                <a className="btn btn-primary" href="#">Contact</a>
+              
+                <a className="btn btn-primary" href={ref}>Contact</a>
               </p>
             </div>
           </div>

@@ -65,7 +65,6 @@ class EventCalendar extends React.Component {
               <div>
                   <nav>
                      {navBar()}
-
                   </nav>
               </div>
             <div>
