@@ -5,6 +5,7 @@ import Cookies  from 'universal-cookie';
 import Compress from "browser-image-compression";
 import auth from '../Login/auth';
 import "./settings.css";
+import accountDisp from './accountDisp';
 const validator = require('email-validator');
 const hierachy = ['member', 'admin', 'owner'];
 
@@ -69,7 +70,7 @@ class Settings extends React.Component {
         //function for adding new important members to display
         const cookies = new Cookies();
         const jwt = cookies.get('token');
-        auth(jwt)
+        auth(false)
         const member = {
             name: this.state.addName,
             position: this.state.addPosition,
@@ -83,7 +84,7 @@ class Settings extends React.Component {
         }
         axios.post('http://localhost:3001/settings/addmember',request)
             .then(function (response) {
-                if(response.data === "true") alert("Successfully added")
+                if(response.data) alert("Successfully added")
                 localStorage.removeItem("img")
         });
         
@@ -93,7 +94,7 @@ class Settings extends React.Component {
         e.preventDefault();
         const cookies = new Cookies();
         const jwt = cookies.get("token");
-        auth(jwt);
+        auth(false);
         var request = {
             code: jwt,
             name: this.state.removeName
@@ -102,26 +103,29 @@ class Settings extends React.Component {
         .then(function(response) {
             if(!response.data)
                 alert("Remove all failed")
-            else alert("All Displays Removed")
+            else alert("Removed Member")
         })
 
     }
     handleRemoveAccountSubmit = async(e) => {
         //function to remove an account by email
         e.preventDefault();
-        const cookies = new Cookies();
-        const jwt = cookies.get("token");
-        auth(jwt);
-        var request = {
-            code: jwt,
-            email: this.state.removeAccountEmail
+        if(!validator.validate(this.state.changeEmail)) alert("Must be a valid email!")
+        else {
+            const cookies = new Cookies();
+            const jwt = cookies.get("token");
+            auth(false);
+            var request = {
+                code: jwt,
+                email: this.state.removeAccountEmail
+            }
+            axios.post('http://localhost:3001/settings/removeaccount',request)
+            .then(function(response) {
+                if(!response.data)
+                    alert("Failed to remove account")
+                else alert("Account " + request.email + " Removed")
+            })
         }
-        axios.post('http://localhost:3001/settings/removeaccount',request)
-        .then(function(response) {
-            if(!response.data)
-                alert("Failed to remove account")
-            else alert("Account Removed")
-        })
     }
     handleChangeAccountRoleSubmit = async(e) => {
         //function to cahne roles of an account
@@ -130,7 +134,7 @@ class Settings extends React.Component {
         else if(hierachy.includes(this.state.changeRole)){  
             const cookies = new Cookies();
             const jwt = cookies.get("token");
-            await auth(jwt);
+            await auth(false);
             const role = cookies.get("role");
             if(hierachy.indexOf(this.state.changeRole)<=hierachy.indexOf(role)){
                 var request = {
@@ -138,8 +142,14 @@ class Settings extends React.Component {
                 email: this.state.changeEmail,
                 role: this.state.changeRole
                 }
-                await axios.post('http://localhost:3001/settings/changerole',request,{timeout: 100}).catch(e => alert(e));
-                window.location.reload();
+                axios.post('http://localhost:3001/settings/changerole',request,{timeout: 100})
+                .then(function(response) {
+                    if(response.data) alert("Account " + request.email +"'s role changed to " + request.role)
+                    else alert("Role Change Unsuccessful")
+                    //window.location.reload();
+                }).catch(e => alert(e));
+                
+                //
             } else alert("You do not have permission to do this!")      
         } else {
             alert("Roles can only be set to member, admin, or owner!")
@@ -151,7 +161,7 @@ class Settings extends React.Component {
         e.preventDefault();
         const cookies = new Cookies();
         const jwt = cookies.get("token");
-        auth(jwt);
+        auth(false);
         var request = {
             code: jwt,
             boxTitle: this.state.boxTitle,
@@ -168,10 +178,9 @@ class Settings extends React.Component {
         e.preventDefault();
         const cookies = new Cookies();
         const jwt = cookies.get("token");
-        auth(jwt);
+        auth(false);
         axios.post('http://localhost:3001/settings/removeall',{code: jwt})
         .then(function(response) {
-            alert("hey")
             if(!response.data)
                 alert("Removeall failed")
             else alert("All Displays Removed")
@@ -256,34 +265,43 @@ class Settings extends React.Component {
                             </form>
                         </div> 
                         <div className = 'col-md-6'>
-                            <form className = "holder-right" onSubmit={this.handleRemoveMemberSubmit}>
-                                <h4>Remove Display Member</h4>
-                                <div className = 'input-group mb-3'>
-                                    <input type="text" className ='form-control' name = 'removeName' placeholder = 'Name' value={this.state.removeName}  onChange={this.handleChange}/>
+                            <div className = 'row'>
+                                <div className = 'col-md-6'>
+                                    <form className = "holder" onSubmit={this.handleRemoveMemberSubmit}>
+                                        <h4>Remove Display Member</h4>
+                                        <div className = 'input-group mb-3'>
+                                            <input type="text" className ='form-control' name = 'removeName' placeholder = 'Name' value={this.state.removeName}  onChange={this.handleChange}/>
+                                        </div>
+                                        <input className = 'submit' type="submit" value = 'Remove Member'  name = "submit button" />
+                                    </form>
+                                    <form className = "holder" onSubmit={this.handleRemoveAllMemberSubmit}>
+                                        <input className = 'submit' type="submit" value = 'Remove All Display Members'  name = "submit button" />
+                                    </form>
+                                    <form className = "holder" onSubmit={this.handleRemoveAccountSubmit}>
+                                        <h4>Remove Account</h4>
+                                        <div className = 'input-group mb-3'>
+                                            <input type="text" className ='form-control'name = 'removeAccountEmail' placeholder = 'Email' value={this.state.removeAccountEmail}  onChange={this.handleChange}/>
+                                        </div>
+                                        <input className = 'submit' type="submit" value = 'Remove Account'  name = "submit button" />
+                                    </form>
+                                    <form className = "holder" onSubmit={this.handleChangeAccountRoleSubmit}>
+                                        <h4>Change Account Role</h4>
+                                        <div className = 'input-group mb-3'>
+                                            <input type="text" className ='form-control'name = 'changeEmail' placeholder = 'Email' value={this.state.changeEmail}  onChange={this.handleChange}/>
+                                        </div>
+                                        <div className = 'input-group mb-3'>
+                                            <input type="text" className ='form-control'name = 'changeRole' placeholder = 'Role' value={this.state.changeRole}  onChange={this.handleChange}/>
+                                        </div>
+                                        <input className = 'submit' type="submit" value = 'Change Role'  name = "submit button" />
+                                    </form>
                                 </div>
-                                <input className = 'submit' type="submit" value = 'Remove Member'  name = "submit button" />
-                            </form>
-                            
-                            <form className = "holder-right" onSubmit={this.handleRemoveAllMemberSubmit}>
-                                <input className = 'submit' type="submit" value = 'Remove All Display Members'  name = "submit button" />
-                            </form>
-                            <form className = "holder-right" onSubmit={this.handleRemoveAccountSubmit}>
-                                <h4>Remove Account</h4>
-                                <div className = 'input-group mb-3'>
-                                    <input type="text" className ='form-control'name = 'removeAccountEmail' placeholder = 'Email' value={this.state.removeAccountEmail}  onChange={this.handleChange}/>
+                                <div className = 'col'>
+                                    <h4>Club Members</h4>
+                                   <ul class="list-group">
+                                    {accountDisp()}
+                                    </ul>
                                 </div>
-                                <input className = 'submit' type="submit" value = 'Remove Account'  name = "submit button" />
-                            </form>
-                            <form className = "holder-right" onSubmit={this.handleChangeAccountRoleSubmit}>
-                                <h4>Change Account Role</h4>
-                                <div className = 'input-group mb-3'>
-                                    <input type="text" className ='form-control'name = 'changeEmail' placeholder = 'Email' value={this.state.changeEmail}  onChange={this.handleChange}/>
-                                </div>
-                                <div className = 'input-group mb-3'>
-                                    <input type="text" className ='form-control'name = 'changeRole' placeholder = 'Role' value={this.state.changeRole}  onChange={this.handleChange}/>
-                                </div>
-                                <input className = 'submit' type="submit" value = 'Change Role'  name = "submit button" />
-                            </form>
+                            </div>
                         </div> 
                         <div className = 'col-md-12'>
                             <form className = 'holder-center' onSubmit={this.handleChangeBoxSubmit}>

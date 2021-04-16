@@ -7,8 +7,8 @@
 .holder-left{
     margin-left: 50%;
 }
-.holder-right{
-    margin-right: 50%;
+.col{
+    margin-left: 2%;
 }
 .submit{
     width: 100%;

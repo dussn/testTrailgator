@@ -157,7 +157,7 @@ app.post('/data', async (req, res) => {
 //route for adding new display member
 app.post('/settings/addmember', async (req, res) => {
   console.log("attempting to add...")
-  
+  var ret;
   try{
     var role = (await auth.authenticateToken(req)).role
     //autheticate that admin is making the request
@@ -170,21 +170,22 @@ app.post('/settings/addmember', async (req, res) => {
         }, function(err) {
           if(err) { 
               console.log(err);
-              res.end();
+              res.send(false);
           }
                       //successfully added member to db
           else {
-              res.send({status: "true"});
+              res.send(true);
               console.log("added");
           }
       });
     }
-    else res.end();
+    else res.send(false);
   }
   catch (error) {
     console.log(error);
-    res.end()
+    res.send(false);
   }
+  
 });
 
 
